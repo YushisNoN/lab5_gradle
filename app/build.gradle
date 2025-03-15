@@ -1,5 +1,6 @@
 plugins {
-    id 'application'
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 repositories {
@@ -7,19 +8,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation libs.junit.jupiter
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation libs.guava
-    implementation 'com.google.code.gson:gson:2.12.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
 }
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+shadowJar {
+    archiveClassifier.set('all') // Добавляет суффикс "-all" к имени JAR-файла
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'lab5_gradle.App' // Укажи свой главный класс
     }
-}
-
-application {
-    // Define the main class for the application.
-    mainClass = 'lab5_gradle.App'
 }

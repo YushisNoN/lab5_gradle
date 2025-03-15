@@ -23,11 +23,16 @@ public class ConsoleHandler implements Console {
 
     @Override
     public void printString(String outputString) {
-        System.out.println(outputString);
+        System.out.print(outputString);
     }
 
     @Override
     public String toString() {
         return "Console";
+    }
+
+    @Override
+    public void printStringln(String outputString) {
+        System.out.println(outputString);
     }
 }

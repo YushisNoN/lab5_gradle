@@ -6,4 +6,6 @@ public interface Console {
 
     public void printString(String outputString);
 
+    public void printStringln(String outputString);
+
 }

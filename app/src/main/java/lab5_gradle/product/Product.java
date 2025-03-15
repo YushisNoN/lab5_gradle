@@ -1,5 +1,6 @@
 package lab5_gradle.product;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import lab5_gradle.coordinates.Coordinates;
@@ -96,6 +97,14 @@ public class Product implements Comparable<Product> {
         }
     }
 
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return this.creationDate;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -112,12 +121,20 @@ public class Product implements Comparable<Product> {
         return this.id;
     }
 
-    public UnitOfMeasure getMeasure() {
+    public UnitOfMeasure getUnitOfMeasure() {
         return this.unitOfMeasure;
     }
 
-    public Coordinates getCoords() {
+    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
+        this.unitOfMeasure = unitOfMeasure;
+    }
+
+    public Coordinates getCoordinates() {
         return this.coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     @Override

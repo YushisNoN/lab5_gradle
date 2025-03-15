@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.interfaces.Writeable;
@@ -17,13 +16,11 @@ public class FileWriter extends AbstractFileUse implements Writeable {
 
     @Override
     public <Product> void write(ProductManager<Product> productManager) throws FileDontExistsException, IOException {
-        fileToRead = new File(this.pathToCurrentDirectory + "\\" + filename);
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
-        String jsonData = gson.toJson(productManager.getCollection());
+        fileToRead = new File(pathToCurrentDirectory + "\\" + filename);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonData = mapper.writeValueAsString(productManager.getCollection());
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(
-                    this.pathToCurrentDirectory + "\\" + this.filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(pathToCurrentDirectory + "\\" + filename);
             fileOutputStream.write(jsonData.getBytes(StandardCharsets.UTF_8));
             fileOutputStream.flush();
             fileOutputStream.close();

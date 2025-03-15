@@ -1,5 +1,6 @@
 package lab5_gradle.utility;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import lab5_gradle.commands.Add;
@@ -16,6 +17,7 @@ import lab5_gradle.commands.RemoveGreater;
 import lab5_gradle.commands.Save;
 import lab5_gradle.commands.Show;
 import lab5_gradle.commands.UpdateID;
+import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.exceptions.WrongCommandFoundException;
 import lab5_gradle.interfaces.Executable;
 import lab5_gradle.product.Product;
@@ -25,6 +27,17 @@ public class Kernel {
     private ConsoleHandler consoleManager = new ConsoleHandler();
     private CommandManager commandManager = new CommandManager();
     private ProductManager<Product> productManager = new ProductManager<Product>();
+    private FileReader fileReader = new FileReader();
+
+    public Kernel() {
+        try {
+            this.fileReader.read(this.productManager);
+        } catch (FileDontExistsException exception) {
+            System.out.println(exception.getMessage());
+        } catch (IOException exception) {
+            System.out.println(exception.getMessage());
+        }
+    }
 
     public void setCommands() {
         this.commandManager.addCommand(new Help(this.commandManager.getCommandsList()));
@@ -44,6 +57,7 @@ public class Kernel {
     }
 
     public void runProgram() {
+        this.consoleManager.printString("-> ");
         while (this.consoleManager.getInputStream().hasNextLine() && false == this.exitProgram) {
             String currentInput = this.consoleManager.getInputString();
             String[] currentArguments = Arrays.copyOfRange(currentInput.split(" "), 1, currentInput.split(" ").length);
@@ -59,8 +73,9 @@ public class Kernel {
                     currentCommand.execute();
                 }
             } catch (Exception exception) {
-                this.consoleManager.printString(exception.getMessage());
+                this.consoleManager.printStringln(exception.getMessage());
             }
+            this.consoleManager.printString("-> ");
         }
     }
 }

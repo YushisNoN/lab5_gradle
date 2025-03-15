@@ -1,10 +1,14 @@
 package lab5_gradle.coordinates;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lab5_gradle.exceptions.NullValueException;
 import lab5_gradle.exceptions.CoordinateWrongValueException;
 
-public class Coordinates {
+public class Coordinates implements Comparable<Coordinates> {
+    @JsonProperty("x")
     private Long x; // Значение поля должно быть больше -852, Поле не может быть null
+    @JsonProperty("y")
     private Integer y; // Поле не может быть null
 
     public void setCoordinateX(Long newValueX) throws NullValueException, CoordinateWrongValueException {
@@ -38,5 +42,14 @@ public class Coordinates {
                 "x=" + this.x +
                 ", y=" + this.y +
                 "}";
+    }
+
+    @Override
+    public int compareTo(Coordinates other) {
+        int xComparison = this.x.compareTo(other.x);
+        if (xComparison != 0) {
+            return xComparison;
+        }
+        return this.y.compareTo(other.y);
     }
 }

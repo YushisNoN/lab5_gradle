@@ -1,36 +1,41 @@
 package lab5_gradle.locations;
 
+import java.util.Objects;
+
 import lab5_gradle.exceptions.NullValueException;
 
-public class Location {
+public class Location implements Comparable<Location> {
     private long x;
     private Double y; // Поле не может быть null
     private double z;
 
-    public void setLocationHeight(Double newHeight) throws NullValueException {
+    public Location() {
+    }
+
+    public void setY(Double newHeight) throws NullValueException {
         if (null == newHeight) {
             throw new NullValueException();
         }
         this.y = newHeight;
     }
 
-    public void setLocationWidth(long newWidth) {
+    public void setX(long newWidth) {
         this.x = newWidth;
     }
 
-    public void setLocationDepth(double newDepth) {
+    public void setZ(double newDepth) {
         this.z = newDepth;
     }
 
-    public long getLocationWidth() {
+    public long getX() {
         return this.x;
     }
 
-    public double getLocationDepth() {
+    public double getZ() {
         return this.z;
     }
 
-    public Double getLocationHeight() {
+    public Double getY() {
         return this.y;
     }
 
@@ -41,5 +46,35 @@ public class Location {
                 ", height=" + this.y +
                 ", depth=" + this.z +
                 "}";
+    }
+
+    @Override
+    public int compareTo(Location other) {
+        int xComparison = Long.compare(this.x, other.x);
+        if (xComparison != 0) {
+            return xComparison;
+        }
+        int yComparison = this.y.compareTo(other.y);
+        if (yComparison != 0) {
+            return yComparison;
+        }
+        return Double.compare(this.z, other.z);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Location myClass = (Location) o;
+        return x == myClass.x &&
+                Double.compare(myClass.z, z) == 0 &&
+                y.equals(myClass.y);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 }

@@ -1,5 +1,7 @@
 package lab5_gradle;
 
+import lab5_gradle.exceptions.FileDontExistsException;
+import lab5_gradle.exceptions.NotFileException;
 import lab5_gradle.utility.FileReader;
 import lab5_gradle.utility.Kernel;
 
@@ -8,26 +10,14 @@ public class App {
         Kernel kernel = new Kernel();
         kernel.setCommands();
         if (args.length == 1) {
-            FileReader.setFileName(args[0]);
+            try {
+                FileReader.setFileName(args[0]);
+            } catch (FileDontExistsException exception) {
+                System.out.println(exception.getMessage());
+            } catch (NotFileException exception) {
+                System.out.println(exception.getMessage());
+            }
         }
         kernel.runProgram();
     }
 }
-
-/*
- * 
- * try {
- * Product testProduct = new Product.ProductBuilder()
- * .setName("Aboba")
- * .setPrice(-90)
- * .setCoordinates(new Coordinates())
- * .setOwner(new Person.PersonBuilder()
- * .setName("Ivan")
- * .setHeight(100.02f)
- * .buildPerson())
- * .buildProduct();
- * System.out.println(testProduct.toString());
- * } catch (Exception e) {
- * System.out.println(e.getMessage());
- * }
- */

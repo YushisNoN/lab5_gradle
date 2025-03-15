@@ -27,7 +27,7 @@ public class LocationCreator {
                 if (currentInput.matches("^-?\\d+(\\.\\d+)?$") == false) {
                     throw new IncorrectIntegerValueException();
                 }
-                this.location.setLocationHeight(Double.parseDouble(currentInput));
+                this.location.setY(Double.parseDouble(currentInput));
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());
@@ -52,7 +52,7 @@ public class LocationCreator {
                 if (currentInput.matches("^-?\\d+(\\.\\d+)?$") == false) {
                     throw new IncorrectIntegerValueException();
                 }
-                this.location.setLocationDepth(Double.parseDouble(currentInput));
+                this.location.setZ(Double.parseDouble(currentInput));
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());
@@ -75,7 +75,7 @@ public class LocationCreator {
                 if (currentInput.matches("^\\d+$") == false) {
                     throw new IncorrectIntegerValueException();
                 }
-                this.location.setLocationWidth(Integer.parseInt(currentInput));
+                this.location.setX(Integer.parseInt(currentInput));
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());
