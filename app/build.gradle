@@ -23,8 +23,3 @@ application {
     // Define the main class for the application.
     mainClass = 'lab5_gradle.App'
 }
-
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
