@@ -8,6 +8,8 @@ import lab5_gradle.commands.AddIfMax;
 import lab5_gradle.commands.AddIfMin;
 import lab5_gradle.commands.Clear;
 import lab5_gradle.commands.CountLessThanPrice;
+import lab5_gradle.commands.ExecuteScript;
+import lab5_gradle.commands.Exit;
 import lab5_gradle.commands.FilterContainsName;
 import lab5_gradle.commands.Help;
 import lab5_gradle.commands.Info;
@@ -28,6 +30,10 @@ public class Kernel {
     private CommandManager commandManager = new CommandManager();
     private ProductManager<Product> productManager = new ProductManager<Product>();
     private FileReader fileReader = new FileReader();
+
+    public void exitProgram() {
+        this.exitProgram = true;
+    }
 
     public Kernel() {
         try {
@@ -54,6 +60,8 @@ public class Kernel {
         this.commandManager.addCommand(new FilterContainsName(this.productManager));
         this.commandManager.addCommand(new RemoveAnyByPrice(this.productManager));
         this.commandManager.addCommand(new Save(this.productManager));
+        this.commandManager.addCommand(new Exit(this));
+        this.commandManager.addCommand(new ExecuteScript());
     }
 
     public void runProgram() {

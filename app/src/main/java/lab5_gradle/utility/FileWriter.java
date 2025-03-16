@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,10 +19,11 @@ public class FileWriter extends AbstractFileUse implements Writeable {
         ObjectMapper mapper = new ObjectMapper();
         String jsonData = mapper.writeValueAsString(productManager.getCollection());
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(pathToCurrentDirectory + "\\" + filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(fileToRead);
             fileOutputStream.write(jsonData.getBytes(StandardCharsets.UTF_8));
             fileOutputStream.flush();
             fileOutputStream.close();
+            fileToRead.setWritable(false);
         } catch (FileDontExistsException e) {
             System.out.println(e.getMessage());
         }

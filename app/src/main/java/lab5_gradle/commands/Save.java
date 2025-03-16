@@ -12,9 +12,9 @@ import lab5_gradle.utility.ProductManager;
 public class Save extends CommandHandler {
     private ProductManager<Product> productCollection;
 
-    public Save(ProductManager<Product> manager) {
+    public Save(ProductManager<Product> productManager) {
         super();
-        this.productCollection = manager;
+        this.productCollection = productManager;
     }
 
     @Override

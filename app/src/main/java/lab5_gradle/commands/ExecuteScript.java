@@ -1,25 +1,53 @@
 package lab5_gradle.commands;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.List;
+
 import lab5_gradle.exceptions.IncorrectIntegerValueException;
 import lab5_gradle.exceptions.IncorrectStringValueException;
 import lab5_gradle.exceptions.NullValueException;
 import lab5_gradle.exceptions.WrongArgumentsAmountException;
+import lab5_gradle.utility.ConsoleHandler;
+import lab5_gradle.utility.FileReader;
 
 public class ExecuteScript extends CommandHandler {
+    private ConsoleHandler consoleHandler;
 
     public ExecuteScript() {
         super();
+        this.isNeedArguments = true;
+        this.commandArguments = 1;
     }
 
     @Override
     public void execute() throws WrongArgumentsAmountException {
-        System.out.println("какое говнище");
+        throw new WrongArgumentsAmountException();
     }
 
     @Override
     public void execute(String[] arguments)
             throws WrongArgumentsAmountException, IncorrectStringValueException, IncorrectIntegerValueException {
-        throw new WrongArgumentsAmountException();
+        if (arguments.length != this.commandArguments) {
+            throw new WrongArgumentsAmountException();
+        }
+        if (arguments[arguments.length - 1].matches("^-?\\d+$") == true) {
+            throw new IncorrectStringValueException();
+        }
+        try {
+            FileReader fileReader = new FileReader();
+            String commandsList = String.join("\n", fileReader.read(arguments[arguments.length - 1]));
+            InputStream originalInput = System.in;
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(commandsList.getBytes());
+            System.setIn(inputStream);
+            this.consoleHandler = new ConsoleHandler();
+            while (this.consoleHandler.getInputStream().hasNextLine()) {
+                String line = this.consoleHandler.getInputString();
+            }
+            System.setIn(originalInput);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

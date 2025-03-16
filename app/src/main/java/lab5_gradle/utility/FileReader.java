@@ -2,12 +2,11 @@ package lab5_gradle.utility;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 import java.util.TreeSet;
-
-import javax.lang.model.type.ReferenceType;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,17 +20,36 @@ public class FileReader extends AbstractFileUse implements Readable<Product> {
     @Override
     public void read(ProductManager<Product> productManager) throws FileDontExistsException, IOException {
         String jsonData = "";
-        fileToRead = new File(pathToCurrentDirectory + "\\" + filename);
-        try (Scanner scanner = new Scanner(fileToRead)) {
-            while (scanner.hasNext()) {
-                jsonData += scanner.next();
+        try {
+            fileToRead = new File(pathToCurrentDirectory + "\\" + filename);
+            try (Scanner scanner = new Scanner(fileToRead)) {
+                while (scanner.hasNext()) {
+                    jsonData += scanner.next();
+                }
             }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            TreeSet<Product> collection = mapper.readValue(jsonData, new TypeReference<TreeSet<Product>>() {
+            });
+            productManager.setCollection(collection);
+            fileToRead.setWritable(true);
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
         }
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        TreeSet<Product> collection = mapper.readValue(fileToRead, new TypeReference<TreeSet<Product>>() {
-        });
-        productManager.setCollection(collection);
+    }
+
+    public List<String> read(String filename) {
+        try {
+            File file = new File(pathToCurrentDirectory + "\\" + filename);
+            List<String> lines = Files.readAllLines(Paths.get(file.toURI()));
+            return lines;
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+
     }
 
     public static void setFileName(String fileName) throws FileDontExistsException, NotFileException {
