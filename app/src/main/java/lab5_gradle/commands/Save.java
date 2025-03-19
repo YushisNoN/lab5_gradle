@@ -37,6 +37,7 @@ public class Save extends CommandHandler {
         FileWriter fileWriter = new FileWriter();
         try {
             fileWriter.write(productCollection);
+            System.out.println("Коллекция успешно записана в файл");
         } catch (FileDontExistsException e) {
             System.out.println(e.getMessage());
         } catch (IOException e) {
