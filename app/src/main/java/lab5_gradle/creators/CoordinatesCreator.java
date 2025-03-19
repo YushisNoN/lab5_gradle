@@ -28,7 +28,7 @@ public class CoordinatesCreator {
                 if (currentInput.matches("^-?\\d+$") == false) {
                     throw new IncorrectIntegerValueException();
                 }
-                this.coordinates.setCoordinateX(Long.parseLong(currentInput));
+                this.coordinates.setX(Long.parseLong(currentInput));
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());
@@ -57,7 +57,7 @@ public class CoordinatesCreator {
                 if (currentInput.matches("^-?\\d+$") == false) {
                     throw new IncorrectIntegerValueException();
                 }
-                this.coordinates.setCoordinateY(Integer.parseInt(currentInput));
+                this.coordinates.setY(Integer.parseInt(currentInput));
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());

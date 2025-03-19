@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import lab5_gradle.product.Product;
 
 public class IdGenerator {
-    private static Long productID = (long) 0;
+    private static Long productID = 0L;
 
     private static void setProductID(Long id) {
         productID = id;

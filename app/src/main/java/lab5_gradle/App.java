@@ -1,5 +1,9 @@
 package lab5_gradle;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+
 import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.exceptions.NotFileException;
 import lab5_gradle.utility.FileReader;

@@ -2,6 +2,11 @@ package lab5_gradle.person;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lab5_gradle.enums.Color;
 import lab5_gradle.enums.Country;
 import lab5_gradle.exceptions.NegativeValueException;
@@ -9,11 +14,29 @@ import lab5_gradle.exceptions.NullValueException;
 import lab5_gradle.locations.Location;
 
 public class Person implements Comparable<Person> {
+
+    @NotBlank(message = "Имя не должно быть пустым")
+    @JsonProperty("name")
     private String name; // Поле не может быть null, Строка не может быть пустой
+
+    @Min(value = (long) 0.0000001, message = "Рост не может быть <= 0")
+    @JsonProperty("height")
     private float height; // Значение поля должно быть больше 0
+
+    @NotNull(message = "Цвет глаз не может быть пустым")
+    @JsonProperty("eyeColor")
     private Color eyeColor; // Поле не может быть null
+
+    @NotNull(message = "Цвет волос не может быть пустым")
+    @JsonProperty("hairColor")
     private Color hairColor; // Поле не может быть null
+
+    @NotNull(message = "Национальность не должна отсутствовать")
+    @JsonProperty("nationality")
     private Country nationality; // Поле не может быть null
+
+    @NotNull(message = "Местоположение не должно быть неопределенным")
+    @JsonProperty("location")
     private Location location; // Поле может быть null
 
     public Person() {

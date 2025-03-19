@@ -1,17 +1,22 @@
 package lab5_gradle.commands;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
+import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.exceptions.IncorrectIntegerValueException;
 import lab5_gradle.exceptions.IncorrectStringValueException;
 import lab5_gradle.exceptions.NullValueException;
 import lab5_gradle.exceptions.ReccursionFoundException;
 import lab5_gradle.exceptions.WrongArgumentsAmountException;
-
+import lab5_gradle.utility.ConsoleHandler;
 import lab5_gradle.utility.FileReader;
 import lab5_gradle.utility.Kernel;
+import java.util.LinkedList;
 
 public class ExecuteScript extends CommandHandler {
     private Kernel kernel;
@@ -44,10 +49,22 @@ public class ExecuteScript extends CommandHandler {
             if (this.finishedScripts.contains(arguments[arguments.length - 1])) {
                 throw new ReccursionFoundException();
             }
-            this.kernel.executeCommandsFromScript(commandsList);
-            this.finishedScripts.add(arguments[arguments.length - 1]);
+            String input = String.join("\n", commandsList) + "\n";
+            InputStream scriptInput = new ByteArrayInputStream(input.getBytes());
 
-        } catch (Exception e) {
+            System.out.println(scriptInput);
+            InputStream originalInput = System.in;
+            System.setIn(scriptInput);
+            this.kernel.consoleManager = new ConsoleHandler();
+            this.kernel.runProgram();
+            // this.kernel.runProgram();
+            System.setIn(originalInput);
+
+            // this.kernel.executeCommandsFromScript(commandsList);
+            this.finishedScripts.add(arguments[arguments.length - 1]);
+        } catch (FileDontExistsException exception) {
+            System.out.println(exception.getMessage());
+        } catch (ReccursionFoundException e) {
             System.out.println(e.getMessage());
         }
     }

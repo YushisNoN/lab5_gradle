@@ -2,11 +2,20 @@ package lab5_gradle.locations;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.NotNull;
 import lab5_gradle.exceptions.NullValueException;
 
 public class Location implements Comparable<Location> {
+    @JsonProperty("x")
     private long x;
+
+    @NotNull(message = "Высота не может отсутствовать")
+    @JsonProperty("y")
     private Double y; // Поле не может быть null
+
+    @JsonProperty("z")
     private double z;
 
     public Location() {

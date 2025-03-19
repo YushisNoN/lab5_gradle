@@ -3,6 +3,11 @@ package lab5_gradle.product;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lab5_gradle.coordinates.Coordinates;
 import lab5_gradle.enums.UnitOfMeasure;
 import lab5_gradle.exceptions.EmptyValueException;
@@ -12,15 +17,35 @@ import lab5_gradle.person.Person;
 import lab5_gradle.utility.IdGenerator;
 
 public class Product implements Comparable<Product> {
-
+    @NotNull(message = "Значение id не может быть пустым")
+    @Min(value = 1, message = "ID -> натуральное число большее 0")
+    @JsonProperty("id")
     private long id; // Значение поля должно быть больше 0, Значение этого поля должно быть //
                      // уникальным, Значение этого поля должно генерироваться автоматически
+
+    @NotBlank(message = "Имя не должно быть пустым")
+    @JsonProperty("name")
     private String name; // Поле не может быть null, Строка не может быть пустой
+
+    @NotNull(message = "Коордианты не должны быть пустыми")
+    @JsonProperty("coordinates")
     private Coordinates coordinates; // Поле не может быть null
+
+    @NotNull(message = "Дата не должна быть пустой")
+    @JsonProperty("creationDate")
     private java.time.LocalDateTime creationDate; // Поле не может быть null, Значение этого поля должно
                                                   // генерироваться// автоматически
+
+    @Min(value = 1, message = "Цена не может быть меньше 0")
+    @JsonProperty("price")
     private int price; // Значение поля должно быть больше 0
+
+    @NotNull(message = "Единицы измерения не должны быть пустыми")
+    @JsonProperty("unitOfMeasure")
     private UnitOfMeasure unitOfMeasure; // Поле может быть null
+
+    @NotNull(message = "Владелец не должен быть неопределён")
+    @JsonProperty("owner")
     private Person owner; // Поле не может быть null
 
     public Product() {

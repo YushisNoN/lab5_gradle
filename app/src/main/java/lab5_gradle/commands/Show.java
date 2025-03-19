@@ -1,5 +1,9 @@
 package lab5_gradle.commands;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import lab5_gradle.exceptions.IncorrectStringValueException;
 import lab5_gradle.exceptions.NullValueException;
 import lab5_gradle.exceptions.WrongArgumentsAmountException;
@@ -26,7 +30,15 @@ public class Show extends CommandHandler {
             return;
         }
         for (Product product : this.productManager.getCollection()) {
-            System.out.println(product.toString());
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.enable(SerializationFeature.INDENT_OUTPUT); // Красивый JSON с отступами
+                String json = mapper.writeValueAsString(product);
+                System.out.println(json);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

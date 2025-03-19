@@ -6,16 +6,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeSet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.exceptions.NotFileException;
 import lab5_gradle.interfaces.Readable;
 import lab5_gradle.product.Product;
 
 public class FileReader extends AbstractFileUse implements Readable<Product> {
+
+    private boolean isValidate = true;
+
     @Override
     public void read(ProductManager<Product> productManager) throws FileDontExistsException, IOException {
         String jsonData = "";
@@ -30,21 +39,44 @@ public class FileReader extends AbstractFileUse implements Readable<Product> {
             mapper.registerModule(new JavaTimeModule());
             TreeSet<Product> collection = mapper.readValue(jsonData, new TypeReference<TreeSet<Product>>() {
             });
-            productManager.setCollection(collection);
-            fileToRead.setWritable(true);
+            for (Product product : collection) {
+                validate(product);
+            }
+            if (isValidate) {
+                productManager.setCollection(collection);
+                System.out.println("Коллекция успешно считана");
+            } else {
+                System.out.println("Коллекция не была считана из-за проблем в json");
+            }
         } catch (Exception exception) {
-            throw new FileDontExistsException();
+            System.out.println(exception.getMessage());
         }
     }
 
-    public List<String> read(String filename) {
+    public void validate(Product product) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+        if (!violations.isEmpty()) {
+            for (ConstraintViolation<Product> violation : violations) {
+                this.isValidate = false;
+                System.out.println(
+                        "Ошибка при десериализации: " + violation.getPropertyPath() + "': " + violation.getMessage());
+            }
+        }
+    }
+
+    public List<String> read(String filename) throws FileDontExistsException {
+        File file = new File(pathToCurrentDirectory + "\\" + filename);
+        if (false == file.exists()) {
+            throw new FileDontExistsException();
+        }
         try {
-            File file = new File(pathToCurrentDirectory + "\\" + filename);
             List<String> lines = Files.readAllLines(Paths.get(file.toURI()));
             return lines;
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return null;

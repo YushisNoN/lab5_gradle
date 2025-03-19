@@ -27,7 +27,7 @@ import lab5_gradle.product.Product;
 
 public class Kernel {
     private boolean exitProgram = false;
-    private ConsoleHandler consoleManager = new ConsoleHandler();
+    public ConsoleHandler consoleManager = new ConsoleHandler();
     private CommandManager commandManager = new CommandManager();
     private ProductManager<Product> productManager = new ProductManager<Product>();
     private FileReader fileReader = new FileReader();
@@ -77,17 +77,18 @@ public class Kernel {
     }
 
     public void executeCommand(String currentInput) {
-        String[] currentArguments = Arrays.copyOfRange(currentInput.split(" "), 1, currentInput.split(" ").length);
+        String[] currentArguments = Arrays.stream(currentInput.replaceAll("\\s+", " ").trim().split(" "))
+                .skip(1).toArray(String[]::new);
         Executable currentCommand = this.commandManager.getCommandsList().get(currentInput.split(" ")[0]);
         try {
             if (null == currentCommand) {
                 throw new WrongCommandFoundException();
             } else {
-                if (currentCommand.getNeededArguments()) {
+                if (currentCommand.getNeededArguments() || currentArguments.length > 0) {
                     currentCommand.execute(currentArguments);
-                } else {
-                    currentCommand.execute();
+                    return;
                 }
+                currentCommand.execute();
             }
         } catch (Exception exception) {
             this.consoleManager.printStringln(exception.getMessage());

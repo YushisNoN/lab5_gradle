@@ -60,7 +60,7 @@ public class ProductCreator {
         return currentInput;
     }
 
-    public Integer askPrice() {
+    public Integer askPrice() throws NegativeValueException {
         boolean passFlag = false;
         String currentInput = null;
         Integer price = null;
@@ -75,6 +75,8 @@ public class ProductCreator {
                     throw new IncorrectIntegerValueException();
                 }
                 price = Integer.parseInt(currentInput);
+                if (price.equals(0))
+                    throw new NegativeValueException();
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());
@@ -82,9 +84,11 @@ public class ProductCreator {
                 System.out.println(e.getMessage());
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: число слишком большое для данного типа");
+            } catch (NegativeValueException exception) {
+                System.out.println(exception.getMessage());
             }
         } while (false == passFlag);
-        return price;
+        return (int) price;
     }
 
     public UnitOfMeasure askUnitOfMeasure() {

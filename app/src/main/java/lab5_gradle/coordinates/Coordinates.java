@@ -2,16 +2,24 @@ package lab5_gradle.coordinates;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lab5_gradle.exceptions.NullValueException;
 import lab5_gradle.exceptions.CoordinateWrongValueException;
 
 public class Coordinates implements Comparable<Coordinates> {
+
+    @NotNull(message = "Не может быть переменная Х быть null")
+    @Min(value = -851, message = "Не может быть меньше -851 значение Х")
     @JsonProperty("x")
     private Long x; // Значение поля должно быть больше -852, Поле не может быть null
+
+    @NotNull(message = "Не может быть переменная Y быть null")
     @JsonProperty("y")
     private Integer y; // Поле не может быть null
 
-    public void setCoordinateX(Long newValueX) throws NullValueException, CoordinateWrongValueException {
+    public void setX(Long newValueX) throws NullValueException, CoordinateWrongValueException {
         if (null == newValueX) {
             throw new NullValueException();
         }
@@ -21,19 +29,11 @@ public class Coordinates implements Comparable<Coordinates> {
         this.x = newValueX;
     }
 
-    public void setCoordinateY(Integer newValueY) throws NullValueException {
+    public void setY(Integer newValueY) throws NullValueException {
         if (null == newValueY) {
             throw new NullValueException();
         }
         this.y = newValueY;
-    }
-
-    public Long getCoordinateX() {
-        return this.x;
-    }
-
-    public Integer getCoordinateY() {
-        return this.y;
     }
 
     @Override

@@ -21,12 +21,10 @@ public class FileWriter extends AbstractFileUse implements Writeable<Product> {
         mapper.registerModule(new JavaTimeModule());
         String jsonData = mapper.writeValueAsString(productManager.getCollection());
         try {
-            fileToRead.setWritable(true);
             FileOutputStream fileOutputStream = new FileOutputStream(fileToRead);
             fileOutputStream.write(jsonData.getBytes(StandardCharsets.UTF_8));
             fileOutputStream.flush();
             fileOutputStream.close();
-            fileToRead.setWritable(false);
         } catch (FileDontExistsException e) {
             System.out.println(e.getMessage());
         }
