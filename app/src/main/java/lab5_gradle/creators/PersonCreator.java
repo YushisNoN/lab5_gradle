@@ -26,7 +26,7 @@ public class PersonCreator {
         do {
             try {
                 System.out.print("Введите имя владельца (не может быть пустой строкой)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -51,7 +51,7 @@ public class PersonCreator {
         do {
             try {
                 System.out.print("Введите рост в см (рост не может быть меньше 0)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -66,6 +66,8 @@ public class PersonCreator {
                 System.out.println(e.getMessage());
             } catch (NegativeValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
@@ -75,8 +77,8 @@ public class PersonCreator {
         String currentInput = null;
         do {
             try {
-                System.out.print("Выберите национальность\n[1]: Француз\n[2]: Индус\n[3] Японец\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                System.out.print("Выберите национальность\n[1]: Француз\n[2]: Индус\n[3]: Японец\n-> ");
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -103,6 +105,8 @@ public class PersonCreator {
                 System.out.println(e.getMessage());
             } catch (NullValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
@@ -113,7 +117,7 @@ public class PersonCreator {
         do {
             try {
                 System.out.print("Выберите цвет глаз\n[1]: Карие\n[2]: Голубые\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -136,6 +140,8 @@ public class PersonCreator {
                 System.out.println(e.getMessage());
             } catch (NullValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
@@ -146,7 +152,7 @@ public class PersonCreator {
         do {
             try {
                 System.out.print("Выберите цвет волос\n[1]: Русые\n[2]: Болотные\n[3]: Красные\n[4]: Седые\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -177,6 +183,8 @@ public class PersonCreator {
                 System.out.println(e.getMessage());
             } catch (NullValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }

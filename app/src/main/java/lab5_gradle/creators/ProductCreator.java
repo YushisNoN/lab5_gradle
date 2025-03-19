@@ -42,7 +42,7 @@ public class ProductCreator {
         do {
             try {
                 System.out.print("Введите название продукта (не может быть пустой строкой)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -63,24 +63,28 @@ public class ProductCreator {
     public Integer askPrice() {
         boolean passFlag = false;
         String currentInput = null;
+        Integer price = null;
         do {
             try {
                 System.out.print("Введите цену товара (цена > 0)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
                 if (currentInput.matches("^\\d+$") == false) {
                     throw new IncorrectIntegerValueException();
                 }
+                price = Integer.parseInt(currentInput);
                 passFlag = true;
             } catch (EmptyValueException e) {
                 System.out.println(e.getMessage());
             } catch (IncorrectIntegerValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
-        return Integer.parseInt(currentInput);
+        return price;
     }
 
     public UnitOfMeasure askUnitOfMeasure() {
@@ -91,7 +95,7 @@ public class ProductCreator {
             try {
                 System.out.print(
                         "Выберите тип единицы измерения:\n[1]: Миллиметры\n[2]: Сантиметры\n[3]: Метры\n[4]: Квадратные метры\n[5]: Литры\n[6]: Не добавлять :(\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
 
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
@@ -129,6 +133,8 @@ public class ProductCreator {
                 System.out.println(e.getMessage());
             } catch (IncorrectIntegerValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
         return type;

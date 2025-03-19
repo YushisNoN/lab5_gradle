@@ -7,6 +7,7 @@ import lab5_gradle.utility.ProductManager;
 import lab5_gradle.creators.ProductCreator;
 
 public class Add extends CommandHandler {
+
     private ProductManager<Product> productCollection;
 
     public Add(ProductManager<Product> manager) {

@@ -21,7 +21,7 @@ public class CoordinatesCreator {
         do {
             try {
                 System.out.print("Введите координату Х (Х > -852)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -38,6 +38,8 @@ public class CoordinatesCreator {
                 System.out.println(e.getMessage());
             } catch (CoordinateWrongValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
@@ -48,7 +50,7 @@ public class CoordinatesCreator {
         do {
             try {
                 System.out.print("Введите координату Y\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -63,6 +65,8 @@ public class CoordinatesCreator {
                 System.out.println(e.getMessage());
             } catch (NullValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }

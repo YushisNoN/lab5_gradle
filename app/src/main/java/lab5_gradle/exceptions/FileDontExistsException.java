@@ -9,6 +9,6 @@ public class FileDontExistsException extends FileNotFoundException {
 
     @Override
     public String getMessage() {
-        return "Файл не существует";
+        return "Файла для чтения коллекции не существует, работа будет продолжена без загрукзи коллекции.";
     }
 }

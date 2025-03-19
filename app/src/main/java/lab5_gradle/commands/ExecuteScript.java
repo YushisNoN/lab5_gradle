@@ -1,23 +1,27 @@
 package lab5_gradle.commands;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lab5_gradle.exceptions.IncorrectIntegerValueException;
 import lab5_gradle.exceptions.IncorrectStringValueException;
 import lab5_gradle.exceptions.NullValueException;
+import lab5_gradle.exceptions.ReccursionFoundException;
 import lab5_gradle.exceptions.WrongArgumentsAmountException;
-import lab5_gradle.utility.ConsoleHandler;
+
 import lab5_gradle.utility.FileReader;
+import lab5_gradle.utility.Kernel;
 
 public class ExecuteScript extends CommandHandler {
-    private ConsoleHandler consoleHandler;
+    private Kernel kernel;
+    private Set<String> finishedScripts = new HashSet<>();
 
-    public ExecuteScript() {
+    public ExecuteScript(Kernel kernel) {
         super();
         this.isNeedArguments = true;
         this.commandArguments = 1;
+        this.kernel = kernel;
     }
 
     @Override
@@ -36,15 +40,13 @@ public class ExecuteScript extends CommandHandler {
         }
         try {
             FileReader fileReader = new FileReader();
-            String commandsList = String.join("\n", fileReader.read(arguments[arguments.length - 1]));
-            InputStream originalInput = System.in;
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(commandsList.getBytes());
-            System.setIn(inputStream);
-            this.consoleHandler = new ConsoleHandler();
-            while (this.consoleHandler.getInputStream().hasNextLine()) {
-                String line = this.consoleHandler.getInputString();
+            List<String> commandsList = fileReader.read(arguments[arguments.length - 1]);
+            if (this.finishedScripts.contains(arguments[arguments.length - 1])) {
+                throw new ReccursionFoundException();
             }
-            System.setIn(originalInput);
+            this.kernel.executeCommandsFromScript(commandsList);
+            this.finishedScripts.add(arguments[arguments.length - 1]);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

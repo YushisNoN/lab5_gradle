@@ -11,10 +11,10 @@ import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.interfaces.Writeable;
 import lab5_gradle.product.Product;
 
-public class FileWriter extends AbstractFileUse implements Writeable {
+public class FileWriter extends AbstractFileUse implements Writeable<Product> {
 
     @Override
-    public <Product> void write(ProductManager<Product> productManager) throws FileDontExistsException, IOException {
+    public void write(ProductManager<Product> productManager) throws FileDontExistsException, IOException {
         fileToRead = new File(pathToCurrentDirectory + "\\" + filename);
         ObjectMapper mapper = new ObjectMapper();
         String jsonData = mapper.writeValueAsString(productManager.getCollection());

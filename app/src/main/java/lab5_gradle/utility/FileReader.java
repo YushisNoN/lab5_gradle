@@ -10,7 +10,6 @@ import java.util.TreeSet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import lab5_gradle.exceptions.FileDontExistsException;
 import lab5_gradle.exceptions.NotFileException;
 import lab5_gradle.interfaces.Readable;
@@ -34,7 +33,7 @@ public class FileReader extends AbstractFileUse implements Readable<Product> {
             productManager.setCollection(collection);
             fileToRead.setWritable(true);
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
+            throw new FileDontExistsException();
         }
     }
 

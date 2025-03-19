@@ -15,7 +15,7 @@ public class Coordinates implements Comparable<Coordinates> {
         if (null == newValueX) {
             throw new NullValueException();
         }
-        if (newValueX < -852) {
+        if (newValueX <= -852) {
             throw new CoordinateWrongValueException();
         }
         this.x = newValueX;

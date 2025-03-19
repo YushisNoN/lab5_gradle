@@ -2,6 +2,7 @@ package lab5_gradle.utility;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import lab5_gradle.commands.Add;
 import lab5_gradle.commands.AddIfMax;
@@ -61,29 +62,41 @@ public class Kernel {
         this.commandManager.addCommand(new RemoveAnyByPrice(this.productManager));
         this.commandManager.addCommand(new Save(this.productManager));
         this.commandManager.addCommand(new Exit(this));
-        this.commandManager.addCommand(new ExecuteScript());
+        this.commandManager.addCommand(new ExecuteScript(this));
     }
 
     public void runProgram() {
         this.consoleManager.printString("-> ");
         while (this.consoleManager.getInputStream().hasNextLine() && false == this.exitProgram) {
-            String currentInput = this.consoleManager.getInputString();
-            String[] currentArguments = Arrays.copyOfRange(currentInput.split(" "), 1, currentInput.split(" ").length);
-            Executable currentCommand = this.commandManager.getCommandsList().get(currentInput.split(" ")[0]);
-            try {
-                if (null == currentCommand) {
-                    throw new WrongCommandFoundException();
+            String currentInput = this.consoleManager.getInputString().trim();
+            this.executeCommand(currentInput);
+            if (this.exitProgram)
+                break;
+            this.consoleManager.printString("-> ");
+        }
+    }
+
+    public void executeCommand(String currentInput) {
+        String[] currentArguments = Arrays.copyOfRange(currentInput.split(" "), 1, currentInput.split(" ").length);
+        Executable currentCommand = this.commandManager.getCommandsList().get(currentInput.split(" ")[0]);
+        try {
+            if (null == currentCommand) {
+                throw new WrongCommandFoundException();
+            } else {
+                if (currentCommand.getNeededArguments()) {
+                    currentCommand.execute(currentArguments);
                 } else {
-                    if (currentCommand.getNeededArguments()) {
-                        currentCommand.execute(currentArguments);
-                        continue;
-                    }
                     currentCommand.execute();
                 }
-            } catch (Exception exception) {
-                this.consoleManager.printStringln(exception.getMessage());
             }
-            this.consoleManager.printString("-> ");
+        } catch (Exception exception) {
+            this.consoleManager.printStringln(exception.getMessage());
+        }
+    }
+
+    public void executeCommandsFromScript(List<String> commands) {
+        for (String command : commands) {
+            executeCommand(command);
         }
     }
 }

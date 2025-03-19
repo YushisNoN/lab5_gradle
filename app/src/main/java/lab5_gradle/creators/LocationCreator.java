@@ -20,7 +20,7 @@ public class LocationCreator {
         do {
             try {
                 System.out.print("Введите высоту в см (рост не может быть пустой)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -35,6 +35,8 @@ public class LocationCreator {
                 System.out.println(e.getMessage());
             } catch (NullValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
@@ -45,7 +47,7 @@ public class LocationCreator {
         do {
             try {
                 System.out.print("Введите глубину в см (рост не может быть пустой)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -58,6 +60,8 @@ public class LocationCreator {
                 System.out.println(e.getMessage());
             } catch (IncorrectIntegerValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
@@ -68,7 +72,7 @@ public class LocationCreator {
         do {
             try {
                 System.out.print("Введите длину в см (рост не может быть пустой)\n-> ");
-                currentInput = this.consoleManager.getInputString();
+                currentInput = this.consoleManager.getInputString().trim();
                 if (currentInput.isEmpty()) {
                     throw new EmptyValueException();
                 }
@@ -81,6 +85,8 @@ public class LocationCreator {
                 System.out.println(e.getMessage());
             } catch (IncorrectIntegerValueException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: число слишком большое для данного типа");
             }
         } while (false == passFlag);
     }
